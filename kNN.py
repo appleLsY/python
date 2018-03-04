@@ -1,6 +1,7 @@
 #coding=utf-8
 from numpy import *
 import operator
+import os
 
 def createDataSet():
     group=array([[1.0,1.1],[1.0,1.0],[0,0],[0,0.1]])
@@ -94,3 +95,43 @@ def classifyPerson():
     inArr=array([ffMiles,percentTats,iceCream])
     classifierResult=classify((inArr-minVals)/ranges,normMat,datingLabels,3)
     print "you will probably like this person:",resultList[classifierResult-1]
+
+#手写识别系统
+def img2vector(filename):
+    returnVect=zeros((1,1024))
+    fr=open(filename)
+    for i in range(32):
+        lineStr=fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j]=int(lineStr[j])
+    return returnVect
+
+
+def handwritingClassTest():
+    hwLabels=[]
+    #os.listdir() 方法用于返回指定的文件夹包含的文件或文件夹的名字的列表。
+    # 这个列表以字母顺序。 它不包括 '.' 和'..' 即使它在文件夹中
+    trainingFileList=os.listdir('trainingDigits')
+    m=len(trainingFileList)
+    trainingMat=zeros((m,1024))
+    for i in range(m):
+        fileNameStr=trainingFileList[i]
+        fileStr=fileNameStr.split('.')[0]
+        classNumStr=int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        trainingMat[i,:]=img2vector('trainingDigits/%s' %fileNameStr)
+    testFileList=os.listdir('testDigits')
+    errorCount=0.0
+    mTest=len(testFileList)
+    for i in range(mTest):
+        fileNameStr=testFileList[i]
+        fileStr=fileNameStr.split('.')[0]
+        classNumStr=int(fileStr.split('_')[0])
+        vectorUnderTest=img2vector('testDigits/%s' %fileNameStr)
+        classifierResult=classify(vectorUnderTest,trainingMat,hwLabels,3)
+        print "the classifier came back with: %d,the real answer is: %d"\
+         %(classifierResult,classNumStr)
+        if(classifierResult!=classNumStr):
+            errorCount+=1.0
+    print "\nthe total number of errors is: %d" %errorCount
+    print "\nthe total error rate is: %f" %(errorCount/float(mTest))
