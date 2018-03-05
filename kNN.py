@@ -1,4 +1,5 @@
 #coding=utf-8
+from __future__ import print_function
 from numpy import *
 import operator
 import os
@@ -78,8 +79,7 @@ def datingClassTest():
     for i in range(numTestVecs):
         classifierResult=classify(normMat[i,:],normMat[numTestVecs:m,:],\
             datingLabels[numTestVecs:m],3)
-        print "the classifier came back with %d,the real answer is: %d"\
-            %(classifierResult,datingLabels[i])
+        print("the classifier came back with %d,the real answer is: %d" %(classifierResult,datingLabels[i]))
         if(classifierResult!=datingLabels[i]):
             errorCoun+=1.0
     print("the errorid %d, the total error rate is :%f" %(errorCoun,errorCoun/float(numTestVecs)))
@@ -94,7 +94,7 @@ def classifyPerson():
     normMat,ranges,minVals=autoNorm(datingDataMat)
     inArr=array([ffMiles,percentTats,iceCream])
     classifierResult=classify((inArr-minVals)/ranges,normMat,datingLabels,3)
-    print "you will probably like this person:",resultList[classifierResult-1]
+    print("you will probably like this person:",resultList[classifierResult-1])
 
 #手写识别系统
 def img2vector(filename):
@@ -129,9 +129,9 @@ def handwritingClassTest():
         classNumStr=int(fileStr.split('_')[0])
         vectorUnderTest=img2vector('testDigits/%s' %fileNameStr)
         classifierResult=classify(vectorUnderTest,trainingMat,hwLabels,3)
-        print "the classifier came back with: %d,the real answer is: %d"\
-         %(classifierResult,classNumStr)
+        print("the classifier came back with: %d,the real answer is: %d"\
+         %(classifierResult,classNumStr))
         if(classifierResult!=classNumStr):
             errorCount+=1.0
-    print "\nthe total number of errors is: %d" %errorCount
-    print "\nthe total error rate is: %f" %(errorCount/float(mTest))
+    print("\nthe total number of errors is: %d" %errorCount)
+    print("\nthe total error rate is: %f" %(errorCount/float(mTest)))
