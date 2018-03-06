@@ -85,3 +85,35 @@ def createTree(dataSet,labels):
         #递归创建节点
         myTree[bestFeatLabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
     return myTree
+
+
+
+def classify(inputTree,featLabels,testVec):
+    firstStr=inputTree.keys()[0]
+    secondDict=inputTree[firstStr]
+    featIndex=featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex]==key:
+            if type(secondDict[key]).__name__=='dict':
+                classLabel=classify(secondDict[key],featLabels,testVec)
+            # 若secondDict[key]为标签值，则将secondDict[key]赋给classLabel
+            else: classLabel=secondDict[key]
+    return classLabel
+
+# 决策树的序列化
+def storeTree(inputTree,filename):
+    # 导入pyton模块
+    import pickle
+    # 以写的方式打开文件
+    fw=open(filename,'w')
+    # 决策树序列化
+    pickle.dump(inputTree,fw)
+    fw.close()
+# 读取序列化的树
+def grabTree(filename):
+    import pickle
+    fr=open(filename)
+    # 返回读到的树 load：从一个打开的文件句柄加载数据
+    return pickle.load(fr)
+
+
