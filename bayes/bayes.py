@@ -120,3 +120,5 @@ def spamTest():
     print('the errir rate is:', float(errorCount)/len(testSet))
 
 
+
+
