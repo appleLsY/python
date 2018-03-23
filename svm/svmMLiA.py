@@ -15,6 +15,9 @@ def loadDataSet(fileName):
 def selectJrand(i,m):
     j=i
     while(j==i):
+        #numpy.random.uniform(low,high,size)
+        #从一个均匀分布[low,high)中随机采样，注意定义域是左闭右开，即包含low，不包含high.
+        #size缺省时输出1个值。
         j=int(random.uniform(0,m))
     return j
 
@@ -107,6 +110,7 @@ def clacEk(oS,k):
 def selectJ(i,oS,Ei):
     maxK=-1;maxDeltaE=0;Ej=0
     oS.eCache[i]=[1,Ei]
+    #.A是将矩阵转化为array数组类型
     validEcacheList=nonzero(oS.eCache[:,0].A)[0]
     if(len(validEcacheList))>1:
         for k in validEcacheList:
@@ -250,6 +254,7 @@ def testRbf(k1=1.3):
     m,n=shape(datMat)
     for i in range(m):
         kernelEval=kernelTrans(sVs,datMat[i,:],('rbf',k1))
+        #在矩阵中.T是转置矩阵
         predict=kernelEval.T*multiply(labelSV,alphas[svInd])+b
         if sign(predict)!=sign(labelArr[i]):errorCount+=1
     print('the trainning error rate is: %f'%(float(errorCount)/m))
@@ -295,6 +300,7 @@ def testDigits(kTup=('rbf',10)):
     for i in range(m):
         kernelEval=kernelTrans(sVs,datMat[i,:],kTup)
         predict=kernelEval.T*multiply(labelSV,alphas[svInd])+b
+        #np.sign(a) : 计算各元素的符号值 1（+），0，-1（-）
         if sign(predict)!=sign(labelArr[i]):errorCount+=1
     print('the trainning error rate is: %f'%(float(errorCount)/m))
     dataArr,labelArr=loadImages('testDigits')
