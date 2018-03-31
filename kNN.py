@@ -32,7 +32,7 @@ def classify(inX,dataSet,labels,k):
         #get（k，d）相当于一条if…else…语句。若k在字典a中，则返回a[k]；若k不在a中，则返回参数d
         classCount[voteIlabel]=classCount.get(voteIlabel,0)+1
     #sorted是内置排序函数
-    sortedClassCount=sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=True)
+    sortedClassCount=sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return sortedClassCount[0][0]
 
 #从文本文件中解析数据
@@ -87,9 +87,9 @@ def datingClassTest():
 #预测代码
 def classifyPerson():
     resultList=['not at all','in small doses','in large doses']
-    percentTats=float(raw_input("percentage of time spent playing video games?"))
-    ffMiles=float(raw_input("frequent flier miles earned per year?"))
-    iceCream=float(raw_input("liters of ice cream comsumede per year?"))
+    percentTats=float(input("percentage of time spent playing video games?"))
+    ffMiles=float(input("frequent flier miles earned per year?"))
+    iceCream=float(input("liters of ice cream comsumede per year?"))
     datingDataMat,datingLabels=file2matrix('datingTest.txt')
     normMat,ranges,minVals=autoNorm(datingDataMat)
     inArr=array([ffMiles,percentTats,iceCream])
